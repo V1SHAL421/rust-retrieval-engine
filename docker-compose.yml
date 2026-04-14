@@ -1,0 +1,40 @@
+version: "3.9"
+
+services:
+  engine:
+    build:
+      context: ./engine
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001"
+    environment:
+      - PORT=3001
+      - RUST_LOG=engine=info
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3001/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - ENGINE_URL=http://engine:3001
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+    depends_on:
+      engine:
+        condition: service_healthy
+
+  ui:
+    build:
+      context: ./ui
+      dockerfile: Dockerfile
+    ports:
+      - "5173:80"
+    depends_on:
+      - api

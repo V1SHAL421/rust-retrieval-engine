@@ -1,0 +1,252 @@
+[
+  {
+    "id": "doc_001",
+    "title": "Transformer Architecture: Attention Is All You Need",
+    "content": "The Transformer model introduced by Vaswani et al. relies entirely on attention mechanisms, discarding recurrence and convolutions. The core building block is multi-head self-attention, which allows each position in the sequence to attend to all other positions. Scaled dot-product attention computes Q*K^T/sqrt(d_k) followed by softmax and multiplication with V. Multiple attention heads learn different representation subspaces. Positional encodings are added to input embeddings to inject sequence order information."
+  },
+  {
+    "id": "doc_002",
+    "title": "BERT: Pre-training Deep Bidirectional Transformers",
+    "content": "BERT (Bidirectional Encoder Representations from Transformers) pre-trains deep bidirectional representations by jointly conditioning on both left and right context. It uses two pre-training objectives: masked language modeling (MLM), where 15% of tokens are masked and predicted, and next sentence prediction (NSP). BERT fine-tunes on downstream tasks with minimal architecture changes and achieved state-of-the-art on GLUE, SQuAD, and other benchmarks."
+  },
+  {
+    "id": "doc_003",
+    "title": "GPT and Autoregressive Language Models",
+    "content": "Generative Pre-trained Transformers (GPT) use a left-to-right autoregressive language modeling objective. The model is pre-trained to predict the next token given all previous tokens. GPT-2 scaled this to 1.5B parameters and demonstrated impressive zero-shot performance. GPT-3 with 175B parameters showed few-shot learning capabilities. The architecture uses causal masking in attention so each token only attends to previous positions."
+  },
+  {
+    "id": "doc_004",
+    "title": "Retrieval-Augmented Generation (RAG)",
+    "content": "RAG combines parametric knowledge from a language model with non-parametric retrieval from an external document store. During inference, a query is used to retrieve relevant documents, which are then prepended to the prompt as context for the generator. This allows the model to access up-to-date information without retraining. Dense Passage Retrieval (DPR) uses dual encoder architectures to embed queries and documents in the same vector space for nearest-neighbor retrieval."
+  },
+  {
+    "id": "doc_005",
+    "title": "Vector Embeddings and Semantic Search",
+    "content": "Dense vector embeddings encode semantic meaning into high-dimensional float vectors. Cosine similarity between embeddings measures semantic relatedness. Models like sentence-transformers produce embeddings where similar sentences cluster together. Approximate Nearest Neighbor (ANN) search algorithms like HNSW and FAISS enable fast retrieval over millions of vectors. Embedding dimensions typically range from 384 to 1536 for modern models."
+  },
+  {
+    "id": "doc_006",
+    "title": "BM25 and Probabilistic Information Retrieval",
+    "content": "BM25 is a bag-of-words ranking function based on probabilistic information retrieval theory. It improves on TF-IDF by adding term frequency saturation and document length normalization. The k1 parameter (typically 1.2) controls TF saturation, while b (typically 0.75) controls length normalization. IDF is computed as log((N-df+0.5)/(df+0.5)+1) where N is total documents and df is the number containing the term. BM25 remains highly competitive with neural methods on many benchmarks."
+  },
+  {
+    "id": "doc_007",
+    "title": "Hybrid Search: Combining Lexical and Dense Retrieval",
+    "content": "Hybrid retrieval combines BM25 lexical matching with dense vector similarity to get the best of both worlds. Lexical search excels at exact keyword matching and rare terms, while dense retrieval handles synonyms and paraphrases. Scores are typically combined as: hybrid = alpha * bm25_norm + (1-alpha) * vector_norm, with alpha tuned on a validation set. Reciprocal Rank Fusion (RRF) is an alternative that combines ranked lists without score normalization."
+  },
+  {
+    "id": "doc_008",
+    "title": "FAISS: Efficient Similarity Search at Scale",
+    "content": "FAISS (Facebook AI Similarity Search) provides efficient algorithms for searching high-dimensional vector spaces. IndexFlatL2 performs exact L2 search. IndexIVFFlat uses inverted file index with k-means clustering for approximate search. HNSW (Hierarchical Navigable Small World) graphs offer excellent recall-speed tradeoffs. Product Quantization (PQ) compresses vectors to reduce memory usage. FAISS supports GPU acceleration for massive throughput."
+  },
+  {
+    "id": "doc_009",
+    "title": "Fine-tuning Language Models for Downstream Tasks",
+    "content": "Fine-tuning adapts pre-trained language models to specific tasks by continuing training on labeled data. Full fine-tuning updates all parameters. Parameter-efficient methods like LoRA (Low-Rank Adaptation) add small trainable rank decomposition matrices to frozen weights, dramatically reducing trainable parameters. Prompt tuning and prefix tuning learn soft prompts prepended to the input. Fine-tuning typically requires 10-100x less data than pre-training from scratch."
+  },
+  {
+    "id": "doc_010",
+    "title": "Evaluation Metrics for Information Retrieval",
+    "content": "Standard IR metrics include Precision@k (fraction of top-k results that are relevant), Recall@k (fraction of relevant results in top-k), Mean Average Precision (MAP), and Mean Reciprocal Rank (MRR). MRR is the average of 1/rank_of_first_relevant_result across queries. NDCG (Normalized Discounted Cumulative Gain) handles graded relevance. BEIR benchmark provides a heterogeneous evaluation suite for zero-shot retrieval."
+  },
+  {
+    "id": "doc_011",
+    "title": "Positional Encodings in Transformers",
+    "content": "Since Transformers have no inherent notion of sequence order, positional information must be injected explicitly. Sinusoidal positional encodings use sin/cos functions of different frequencies, allowing the model to learn relative positions. Learned positional embeddings are an alternative. RoPE (Rotary Position Embedding) encodes positions by rotating key and query vectors, enabling relative attention. ALiBi adds linear biases to attention scores based on distance."
+  },
+  {
+    "id": "doc_012",
+    "title": "Layer Normalization and Training Stability",
+    "content": "Layer normalization normalizes activations across the feature dimension for each sample independently, unlike batch normalization which normalizes across the batch. Pre-norm (applying LayerNorm before attention/FFN) improves training stability over post-norm and allows training deeper models without learning rate warmup. RMSNorm simplifies LayerNorm by removing the mean centering step, reducing computational overhead."
+  },
+  {
+    "id": "doc_013",
+    "title": "Tokenization: BPE, WordPiece, and SentencePiece",
+    "content": "Byte Pair Encoding (BPE) starts with characters and iteratively merges the most frequent adjacent pairs, building a vocabulary of subword units. WordPiece similarly merges pairs that maximize language model likelihood. SentencePiece treats the input as a raw byte stream and can handle any language. The vocabulary size is a hyperparameter (typically 30k-100k tokens). Subword tokenization balances vocabulary size with morphological coverage."
+  },
+  {
+    "id": "doc_014",
+    "title": "The Scaling Laws for Neural Language Models",
+    "content": "Kaplan et al. established empirical scaling laws showing that LLM performance improves predictably with model size, dataset size, and compute. Loss follows power laws in each variable independently. The Chinchilla paper revised these laws, showing that for a given compute budget, optimal performance requires training a smaller model on more data than previous practice (roughly 20 tokens per parameter). These findings drive modern LLM training decisions."
+  },
+  {
+    "id": "doc_015",
+    "title": "Reinforcement Learning from Human Feedback (RLHF)",
+    "content": "RLHF aligns language models with human preferences through three stages: supervised fine-tuning on demonstrations, training a reward model on preference comparisons, and RL optimization of the policy against the reward model using PPO (Proximal Policy Optimization). InstructGPT and ChatGPT use RLHF to improve helpfulness and reduce harmful outputs. RLHF faces challenges including reward hacking, mode collapse, and scalability of human feedback."
+  },
+  {
+    "id": "doc_016",
+    "title": "Mixture of Experts (MoE) in Large Language Models",
+    "content": "Mixture of Experts models use a gating network to route each token to a subset of expert FFN layers, enabling massive parameter counts without proportional compute increase. Sparse MoE activates only top-k experts per token (typically 2 of 8-64). Switch Transformer routes to exactly 1 expert. Load balancing losses prevent expert collapse. GShard and GLaM demonstrated that MoE can outperform dense models at equivalent FLOPs. Mixtral uses MoE with 8 experts, activating 2."
+  },
+  {
+    "id": "doc_017",
+    "title": "KV Cache and Inference Optimization",
+    "content": "During autoregressive generation, Transformer decoders recompute keys and values for all previous tokens at each step. KV caching stores these computations, reducing inference from O(n^2) to O(n) per step. Grouped Query Attention (GQA) shares keys/values across multiple query heads to reduce KV cache memory. Multi-Query Attention (MQA) uses a single key/value head. PagedAttention (vLLM) manages KV cache memory with OS-like paging to increase throughput."
+  },
+  {
+    "id": "doc_018",
+    "title": "Quantization for Model Compression",
+    "content": "Quantization reduces model precision from FP32/FP16 to INT8 or INT4, dramatically reducing memory and increasing inference speed. Post-training quantization (PTQ) applies quantization after training with a small calibration set. Quantization-aware training (QAT) simulates quantization during training. GPTQ uses second-order gradient information for weight quantization. GGUF format enables running quantized LLMs on CPUs. 4-bit quantization typically has <1% quality degradation."
+  },
+  {
+    "id": "doc_019",
+    "title": "Embeddings for Code: CodeBERT and StarCoder",
+    "content": "Code embedding models are pre-trained on source code across multiple programming languages. CodeBERT uses a bimodal objective on code-docstring pairs. GraphCodeBERT incorporates data flow graphs from code. StarCoder is a generative code model trained on The Stack dataset covering 80+ languages. Code embeddings enable semantic code search, where natural language queries retrieve relevant code snippets. Contrastive learning improves embedding alignment between code and natural language."
+  },
+  {
+    "id": "doc_020",
+    "title": "Sparse Attention Patterns: Longformer and BigBird",
+    "content": "Standard self-attention is O(n^2) in sequence length, limiting context windows. Longformer uses a combination of local sliding window attention and global attention on special tokens, achieving O(n) complexity. BigBird augments local attention with random global tokens and a small number of global tokens. Sparse Transformers use strided and fixed attention patterns. These methods enable processing of very long documents like entire books or long codebases."
+  },
+  {
+    "id": "doc_021",
+    "title": "Cross-Encoder Reranking in Neural IR",
+    "content": "Bi-encoder models independently embed queries and documents for fast retrieval but lack cross-attention between them. Cross-encoders take the concatenated query-document pair as input and produce a relevance score using full attention across both. Cross-encoders are much more accurate but expensive, making them suitable as rerankers applied to a small candidate set (e.g., top-100) retrieved by a bi-encoder. MonoBERT and MonoT5 are popular cross-encoder rerankers."
+  },
+  {
+    "id": "doc_022",
+    "title": "Contrastive Learning for Representation Learning",
+    "content": "Contrastive learning trains embeddings by pulling together representations of positive pairs and pushing apart negatives. SimCSE uses dropout as data augmentation, treating the same sentence with different dropout masks as positives. DPR (Dense Passage Retrieval) uses question-passage pairs as positives with in-batch negatives. Hard negative mining selects the most confusing negatives to improve discriminative power. Temperature scaling in the InfoNCE loss controls the sharpness of the similarity distribution."
+  },
+  {
+    "id": "doc_023",
+    "title": "Prompt Engineering and In-Context Learning",
+    "content": "In-context learning allows LLMs to perform tasks from a few examples in the prompt without gradient updates. Chain-of-thought prompting elicits step-by-step reasoning by including worked examples. Zero-shot chain-of-thought adds 'Let's think step by step'. Few-shot prompting selects examples based on similarity to the test query. Instruction tuning trains models to follow natural language instructions, improving zero-shot generalization. Prompt sensitivity remains a key challenge."
+  },
+  {
+    "id": "doc_024",
+    "title": "Constitutional AI and RLAIF",
+    "content": "Constitutional AI (CAI) uses a set of principles to guide model behavior through self-critique and revision. The model critiques its own outputs against principles and revises them. RLAIF (Reinforcement Learning from AI Feedback) replaces human preferences with an AI labeler, scaling preference data generation. Anthropic's Claude models use Constitutional AI. This approach reduces dependence on human labeling while maintaining alignment with specified values."
+  },
+  {
+    "id": "doc_025",
+    "title": "Knowledge Distillation for Smaller Models",
+    "content": "Knowledge distillation trains a smaller student model to mimic a larger teacher. The student is trained on soft probability outputs (logits) of the teacher rather than hard labels, transferring knowledge about the full output distribution. DistilBERT is 40% smaller than BERT while retaining 97% of performance. Task-specific distillation fine-tunes the teacher first. Intermediate layer distillation matches hidden states. TinyLLM and Phi-series models demonstrate effective distillation at scale."
+  },
+  {
+    "id": "doc_026",
+    "title": "Multimodal Models: Vision and Language",
+    "content": "Multimodal models process both images and text. CLIP trains visual and text encoders contrastively on 400M image-text pairs, learning a shared embedding space. DALL-E and Stable Diffusion generate images from text. LLaVA connects a vision encoder to a language model via a projection layer. Flamingo uses cross-attention between frozen vision and language models. GPT-4V and Claude 3 support image inputs. Visual question answering and image captioning are standard benchmarks."
+  },
+  {
+    "id": "doc_027",
+    "title": "Gradient Checkpointing and Memory Efficiency",
+    "content": "Training large models requires managing GPU memory carefully. Gradient checkpointing trades compute for memory by recomputing activations during the backward pass instead of storing them. Mixed precision training (FP16/BF16) halves activation memory. ZeRO (Zero Redundancy Optimizer) shards optimizer states, gradients, and parameters across data parallel workers. Activation offloading moves tensors to CPU. Gradient accumulation enables effective large batch sizes on limited hardware."
+  },
+  {
+    "id": "doc_028",
+    "title": "LLM Agent Frameworks and Tool Use",
+    "content": "LLM agents augment language models with the ability to call external tools: web search, code execution, APIs. ReAct interleaves reasoning (Thought) with tool calls (Action) and observations. OpenAI function calling provides structured tool interfaces. LangChain and LlamaIndex build agent pipelines with memory, retrieval, and multi-step reasoning. Multi-agent frameworks like AutoGen coordinate multiple specialized LLMs. Planning, verification, and error recovery are key challenges."
+  },
+  {
+    "id": "doc_029",
+    "title": "Speculative Decoding for Fast LLM Inference",
+    "content": "Speculative decoding uses a small draft model to generate multiple candidate tokens in parallel, which are then verified by the larger target model in a single forward pass. If the target model accepts k tokens generated by the draft, inference effectively runs k times faster. The acceptance rate depends on alignment between draft and target distributions. Medusa adds multiple decoding heads to the same model. EAGLE uses feature-level speculation. These methods achieve 2-4x speedup."
+  },
+  {
+    "id": "doc_030",
+    "title": "Attention Sink and Long Context Challenges",
+    "content": "LLMs trained on short contexts struggle to generalize to longer sequences due to out-of-distribution positional encodings and attention sink phenomena. Attention sinks are tokens (especially the first token) that absorb disproportionate attention regardless of relevance. StreamingLLM exploits attention sinks to enable infinite-length generation with a fixed attention window. RoPE scaling techniques (linear interpolation, NTK-aware) extend the effective context window of deployed models."
+  },
+  {
+    "id": "doc_031",
+    "title": "Dense Retrieval with DPR and E5",
+    "content": "Dense Passage Retrieval (DPR) trains separate BERT encoders for queries and passages using contrastive loss with labeled question-passage pairs from Natural Questions and TriviaQA. E5 (EmbEddings from bidirEctional Encoder rEpresentations) trains on a diverse weakly-supervised dataset of text pairs, achieving strong zero-shot performance. MTEB (Massive Text Embedding Benchmark) evaluates embedding models across 56 tasks. BGE models from BAAI offer strong multilingual embedding performance."
+  },
+  {
+    "id": "doc_032",
+    "title": "Neural Architecture Search and AutoML",
+    "content": "Neural Architecture Search automates the design of neural network architectures. Differentiable NAS (DARTS) makes the architecture search continuous and differentiable. Evolutionary and reinforcement learning methods explore discrete architecture spaces. Efficiency-aware NAS optimizes for hardware constraints like latency and memory. EfficientNet and MobileNet families emerged from NAS. For transformers, HAT searches for hardware-aware transformer architectures balancing accuracy and inference cost."
+  },
+  {
+    "id": "doc_033",
+    "title": "Flash Attention: Memory-Efficient Exact Attention",
+    "content": "Flash Attention rewrites the attention computation to be IO-aware, fusing the softmax and matmul operations into a single CUDA kernel that reads/writes each tile of Q, K, V once from HBM to SRAM. This reduces memory reads/writes from O(n^2) to O(n) without approximation. Flash Attention 2 improves parallelism and arithmetic intensity. It achieves 2-4x speedup and allows training with much longer context lengths. Flash Attention is now standard in all major LLM training frameworks."
+  },
+  {
+    "id": "doc_034",
+    "title": "Instruction Following and FLAN",
+    "content": "Instruction tuning improves the ability of LLMs to follow natural language task descriptions. FLAN fine-tuned T5 on 62 tasks framed as instructions, dramatically improving zero-shot performance. T0 trained on a diverse set of publicly available datasets with crowdsourced templates. FLAN-T5 and FLAN-PaLM further scale instruction tuning. Super-Natural Instructions uses 1600+ tasks with 3+ examples each. The key insight is that cross-task generalization emerges from task diversity and instruction framing."
+  },
+  {
+    "id": "doc_035",
+    "title": "Byte-Pair Encoding Vocabulary and Tokenizer Training",
+    "content": "Training a BPE tokenizer begins with a base vocabulary of individual characters or bytes. The algorithm counts all adjacent symbol pairs and merges the most frequent pair, adding the merged symbol to the vocabulary. This repeats until the target vocabulary size is reached. GPT-4 uses cl100k_base tokenizer with 100k tokens. Byte-level BPE (used in GPT-2) operates on raw UTF-8 bytes, eliminating unknown tokens entirely. Tokenizer efficiency directly impacts model capacity and inference cost."
+  },
+  {
+    "id": "doc_036",
+    "title": "Parameter-Efficient Fine-tuning: LoRA and Adapters",
+    "content": "LoRA (Low-Rank Adaptation) decomposes weight updates as W + BA where B and A are low-rank matrices (rank r << d). Only B and A are trained, reducing trainable parameters by orders of magnitude. For a 7B model with r=8, LoRA reduces trainable parameters by ~1000x. Adapter layers insert small bottleneck modules between transformer layers. Prefix tuning prepends learned tokens to the key/value sequences. QLoRA combines 4-bit quantization with LoRA for efficient fine-tuning on consumer hardware."
+  },
+  {
+    "id": "doc_037",
+    "title": "Chain-of-Thought Reasoning and Scratchpads",
+    "content": "Chain-of-thought (CoT) prompting elicits multi-step reasoning by including worked examples that show intermediate steps before the final answer. Wei et al. found CoT emerges in models above ~100B parameters. Self-consistency samples multiple reasoning chains and takes the majority answer. Tree-of-Thoughts searches over reasoning paths using BFS/DFS. Scratchpad training explicitly supervises intermediate computation steps. CoT substantially improves performance on math, logic, and commonsense reasoning tasks."
+  },
+  {
+    "id": "doc_038",
+    "title": "Byte Latent Transformer and Tokenizer-Free Models",
+    "content": "Byte Latent Transformers process raw bytes without a tokenizer by patching bytes into larger units dynamically based on entropy. This avoids tokenization artifacts and handles all languages and modalities uniformly. MegaByte processes byte sequences in hierarchical patches. Sparse attention over bytes reduces quadratic complexity. Tokenizer-free models have theoretical advantages for robustness to spelling variations, code, and multilingual text but face challenges in training efficiency compared to subword models."
+  },
+  {
+    "id": "doc_039",
+    "title": "RLHF Alternatives: DPO and ORPO",
+    "content": "Direct Preference Optimization (DPO) reformulates RLHF as a classification problem, directly optimizing the policy from preference pairs without training a separate reward model or using RL. DPO derives that the optimal policy under the KL-constrained RL objective can be expressed in closed form. ORPO (Odds Ratio Preference Optimization) combines supervised fine-tuning and preference alignment in a single objective. SimPO uses simple contrastive learning on preference data. These methods are simpler and more stable than PPO-based RLHF."
+  },
+  {
+    "id": "doc_040",
+    "title": "Data Curation for Large Language Models",
+    "content": "Pre-training data quality significantly impacts LLM capability. C4 (Colossal Clean Crawled Corpus) filters Common Crawl with heuristics: minimum sentence length, removal of offensive words, deduplication. The Pile combines 22 diverse high-quality sources. RedPajama-Data reproduces LLaMA's training data. Deduplication with MinHash LSH removes near-duplicate documents that cause memorization. Data mixing ratios across domains affect downstream task performance. Quality filtering often matters more than quantity."
+  },
+  {
+    "id": "doc_041",
+    "title": "Long-Range Dependencies and Memory in Transformers",
+    "content": "Transformers with full self-attention can theoretically model arbitrary long-range dependencies, but practical context windows are limited by O(n^2) memory. Retrieval-augmented transformers like RETRO fetch chunks from external memory at inference. Recurrent transformers like Mamba use state space models for linear-complexity sequence modeling. Hyena uses long convolutions as a subquadratic attention alternative. These approaches aim to combine the modeling power of Transformers with the memory efficiency of RNNs."
+  },
+  {
+    "id": "doc_042",
+    "title": "Federated Learning for Privacy-Preserving ML",
+    "content": "Federated learning trains models across distributed clients without centralizing raw data. Each client computes gradients locally and only shares updates with the server. FedAvg averages client model weights weighted by dataset size. Differential privacy adds calibrated noise to gradients to bound information leakage. Secure aggregation uses cryptographic protocols to prevent the server from inspecting individual updates. Federated learning is used in mobile keyboard prediction, medical imaging, and financial fraud detection."
+  },
+  {
+    "id": "doc_043",
+    "title": "Causal vs Masked Language Modeling",
+    "content": "Causal language models (CLMs) predict the next token given all previous tokens using autoregressive generation with causal masking. This makes them naturally suited for text generation. Masked language models (MLMs) like BERT predict randomly masked tokens using bidirectional context, making them better for understanding tasks. Prefix language models (e.g. UniLM) use causal attention for the suffix and bidirectional for the prefix. T5 frames all tasks as seq2seq with encoder-decoder attention."
+  },
+  {
+    "id": "doc_044",
+    "title": "Continual Learning and Catastrophic Forgetting",
+    "content": "Continual learning trains models on a sequence of tasks without forgetting previous knowledge. Neural networks suffer catastrophic forgetting: new training overwrites weights used for previous tasks. Elastic Weight Consolidation (EWC) adds a regularization term penalizing changes to parameters important for previous tasks, using the Fisher information matrix. Replay methods store exemplars from previous tasks and interleave them with new data. Prompt-based approaches freeze the backbone and learn task-specific prompts."
+  },
+  {
+    "id": "doc_045",
+    "title": "Structured State Space Models: Mamba and S4",
+    "content": "Structured State Space Models (SSMs) model sequences as linear dynamical systems: h_t = Ah_{t-1} + Bx_t, y_t = Ch_t. S4 parameterizes A as a diagonal plus low-rank matrix, enabling efficient training via convolutions and inference via recurrence. Mamba introduces selective state spaces where A, B, C depend on the input, overcoming SSMs' inability to selectively ignore irrelevant information. Mamba achieves Transformer-level quality on language tasks with linear-time inference."
+  },
+  {
+    "id": "doc_046",
+    "title": "Activation Functions: ReLU, GELU, and SwiGLU",
+    "content": "ReLU (max(0, x)) is simple and effective but can cause dying neurons. GELU (Gaussian Error Linear Unit) approximates ReLU but is smooth and differentiable everywhere. GELU is used in BERT and GPT. SwiGLU uses a gated linear unit: SwiGLU(x,W,V,b,c) = Swish(xW+b) ⊗ (xV+c). PaLM and LLaMA use SwiGLU in FFN layers, which improves quality at equivalent parameter counts. GeGLU uses GELU instead of Swish. GLU variants consistently outperform vanilla FFNs."
+  },
+  {
+    "id": "doc_047",
+    "title": "Sparse Retrieval: BM25, SPLADE, and Learned Sparse",
+    "content": "SPLADE (SParse Lexical AnD Expansion model) produces sparse vector representations where each dimension corresponds to a vocabulary term, enabling inverted index retrieval with semantic understanding. Unlike BM25 which only matches exact query terms, SPLADE expands queries with related terms learned during training. uniCOIL uses the CLS token representation for term weighting. Sparse learned representations combine the efficiency of inverted indexes with the semantic quality of dense models."
+  },
+  {
+    "id": "doc_048",
+    "title": "Model Parallelism: Tensor and Pipeline Parallelism",
+    "content": "Training models that exceed single-GPU memory requires model parallelism. Tensor parallelism splits individual weight matrices across devices (Megatron-LM splits attention heads). Pipeline parallelism assigns different layers to different devices, using micro-batches to minimize pipeline bubbles. 3D parallelism combines data, tensor, and pipeline parallelism. ZeRO-3 shards all model state across data-parallel ranks. Efficient inter-node communication (NVLink, InfiniBand) is critical for model parallel training."
+  },
+  {
+    "id": "doc_049",
+    "title": "Grounding, Hallucination, and Factual Accuracy",
+    "content": "LLMs hallucinate plausible-sounding but false information because they generate text based on pattern matching rather than grounded knowledge retrieval. RAG mitigates hallucination by grounding responses in retrieved documents. Self-RAG trains models to decide when to retrieve and to critique retrieved passages. FActScore decomposes claims into atomic facts and verifies them against Wikipedia. Chain-of-verification generates verification questions for its own claims. Calibration methods align model confidence with accuracy."
+  },
+  {
+    "id": "doc_050",
+    "title": "Evaluation Benchmarks for Language Models",
+    "content": "MMLU (Massive Multitask Language Understanding) covers 57 academic subjects. HellaSwag tests commonsense reasoning. TruthfulQA measures tendency to produce false beliefs. HumanEval and MBPP evaluate code generation. GSM8K and MATH test mathematical reasoning. BIG-bench probes diverse capabilities including logic, world knowledge, and social reasoning. HELM provides holistic evaluation across accuracy, robustness, fairness, and efficiency dimensions. Contamination of training data with benchmark examples is a major validity concern."
+  }
+]

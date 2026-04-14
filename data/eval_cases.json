@@ -1,0 +1,42 @@
+[
+  {
+    "query": "How does multi-head attention work in transformer models?",
+    "relevant_ids": ["doc_001", "doc_011", "doc_033"]
+  },
+  {
+    "query": "What is BM25 and how does term frequency saturation work?",
+    "relevant_ids": ["doc_006", "doc_047"]
+  },
+  {
+    "query": "How do you combine lexical and semantic search in hybrid retrieval?",
+    "relevant_ids": ["doc_007", "doc_006", "doc_005"]
+  },
+  {
+    "query": "Explain retrieval augmented generation and how it reduces hallucination",
+    "relevant_ids": ["doc_004", "doc_049", "doc_031"]
+  },
+  {
+    "query": "What are the scaling laws for large language models?",
+    "relevant_ids": ["doc_014", "doc_048"]
+  },
+  {
+    "query": "How does LoRA enable parameter efficient fine-tuning?",
+    "relevant_ids": ["doc_036", "doc_009"]
+  },
+  {
+    "query": "What is RLHF and how does it align language models with human preferences?",
+    "relevant_ids": ["doc_015", "doc_024", "doc_039"]
+  },
+  {
+    "query": "How does Flash Attention improve memory efficiency during training?",
+    "relevant_ids": ["doc_033", "doc_027", "doc_017"]
+  },
+  {
+    "query": "What vector embedding models are used for semantic search?",
+    "relevant_ids": ["doc_005", "doc_031", "doc_022"]
+  },
+  {
+    "query": "How does Mamba and structured state space models work compared to transformers?",
+    "relevant_ids": ["doc_045", "doc_041", "doc_020"]
+  }
+]

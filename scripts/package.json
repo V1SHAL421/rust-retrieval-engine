@@ -1,0 +1,17 @@
+{
+  "name": "retrieval-scripts",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "seed": "tsx seed.ts",
+    "seed:eval": "tsx seed.ts --eval-only"
+  },
+  "dependencies": {
+    "openai": "^4.52.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "tsx": "^4.15.0",
+    "typescript": "^5.4.0"
+  }
+}
