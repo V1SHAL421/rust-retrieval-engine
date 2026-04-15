@@ -1,5 +1,7 @@
 # Rust Hybrid Retrieval Engine
 
+![Search UI demo showing a query for "How does Flash Attention work" with answer, sources, and latency breakdown](docs/search-ui-demo.png)
+
 A production-quality hybrid retrieval and evaluation engine built for AI infrastructure.
 
 ```
